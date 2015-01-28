@@ -31,7 +31,7 @@ function queryLocalMatch() {
     // **todo** PHP manual says its not exceptionally trusted method of finding the right data http://php.net/manual/en/reserved.variables.server.php
     $referer = $_SERVER['HTTP_REFERER'];
     $query_ref = explode('/',$referer);
-    $namespace = $query_ref[3];
+    $namespace = strtoupper($query_ref[3]);
     $title = $query_ref[4];
     $sql = "SELECT namespace,title FROM scribe WHERE namespace='$namespace' AND title='$title'";
     $sql_cr = "SELECT contents_rendered FROM scribe WHERE namespace='$namespace' AND title='$title'";
@@ -60,7 +60,8 @@ function queryLocalMatch() {
 function queryIfixit() {
     $referer = $_SERVER['HTTP_REFERER'];
     $query_ref = explode('/',$referer);
-    $url = "https://www.ifixit.com/api/2.0/wikis/$query_ref[3]/$query_ref[4]?pretty";
+    $namespace = strtoupper($query_ref[3]);
+    $url = "https://www.ifixit.com/api/2.0/wikis/$namespace/$query_ref[4]?pretty";
     $data = file_get_contents($url);
     $json = json_decode($data, true);
     $validNamespaces = array('CATEGORY','ITEM','TEAM','USER','INFO','WIKI');
